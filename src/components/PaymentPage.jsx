@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useBooking } from '../context/BookingContext';
-import { motion } from 'motion/react';
+import { useBooking } from '../context/BookingContext.jsx';
 import { ChevronLeft, CreditCard, Wallet, Truck, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const PaymentPage = () => {
   const { state, dispatch } = useBooking();
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState(null);
 
   if (!state.pendingBooking) {
     return (

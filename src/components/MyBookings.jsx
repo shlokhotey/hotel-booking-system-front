@@ -1,7 +1,7 @@
 import React from 'react';
-import { useBooking } from '../context/BookingContext';
+import { useBooking } from '../context/BookingContext.jsx';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, MapPin, Ticket, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
+import { Ticket, CheckCircle2, XCircle } from 'lucide-react';
 
 export const MyBookings = () => {
   const { state, dispatch } = useBooking();

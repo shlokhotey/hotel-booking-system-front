@@ -1,13 +1,13 @@
 import React from 'react';
-import { BookingProvider, useBooking } from './context/BookingContext';
-import { Header } from './components/Header';
-import { SearchBar } from './components/SearchBar';
-import { Sidebar } from './components/Sidebar';
-import { HotelList } from './components/HotelCard';
-import { MyBookings } from './components/MyBookings';
-import { LoginPage } from './components/LoginPage';
-import { SupportPage } from './components/SupportPage';
-import { PaymentPage } from './components/PaymentPage';
+import { BookingProvider, useBooking } from './context/BookingContext.jsx';
+import { Header } from './components/Header.jsx';
+import { SearchBar } from './components/SearchBar.jsx';
+import { Sidebar } from './components/Sidebar.jsx';
+import { HotelList } from './components/HotelCard.jsx';
+import { MyBookings } from './components/MyBookings.jsx';
+import { LoginPage } from './components/LoginPage.jsx';
+import { SupportPage } from './components/SupportPage.jsx';
+import { PaymentPage } from './components/PaymentPage.jsx';
 import { motion, AnimatePresence } from 'motion/react';
 
 function AppContent() {
@@ -81,7 +81,7 @@ function AppContent() {
         <div className="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
             <span className="text-xl font-extrabold tracking-tighter text-brand-primary">
-              Stay<span className="text-brand-secondary">Flow</span>
+              Easy<span className="text-brand-secondary">Stay</span>
             </span>
           </div>
           <div className="flex gap-12">
@@ -101,7 +101,7 @@ function AppContent() {
             </div>
           </div>
           <p className="text-[10px] font-bold text-border-theme uppercase tracking-widest">
-            © 2026 StayFlow Inc. All rights reserved.
+            © 2026 EasyStay Inc. All rights reserved.
           </p>
         </div>
       </footer>

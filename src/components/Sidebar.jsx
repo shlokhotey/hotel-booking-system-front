@@ -1,15 +1,15 @@
 import React from 'react';
-import { useBooking } from '../context/BookingContext';
-import { Star, Sliders, ChevronDown } from 'lucide-react';
+import { useBooking } from '../context/BookingContext.jsx';
+import { Star } from 'lucide-react';
 
 export const Sidebar = () => {
   const { state, dispatch } = useBooking();
 
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePriceChange = (e) => {
     dispatch({ type: 'SET_FILTERS', payload: { priceRange: [0, parseInt(e.target.value)] } });
   };
 
-  const handleStarToggle = (star: number) => {
+  const handleStarToggle = (star) => {
     const currentStars = state.filters.starRating;
     const newStars = currentStars.includes(star)
       ? currentStars.filter((s) => s !== star)

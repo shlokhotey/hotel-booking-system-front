@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useBooking } from '../context/BookingContext';
+import { useBooking } from '../context/BookingContext.jsx';
 import { motion } from 'motion/react';
 import { LogIn, Mail, Lock, User as UserIcon } from 'lucide-react';
 
-export const LoginPage: React.FC = () => {
+export const LoginPage = () => {
   const { dispatch } = useBooking();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (email && name) {
       dispatch({ 

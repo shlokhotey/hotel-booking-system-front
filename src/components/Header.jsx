@@ -1,7 +1,6 @@
 import React from 'react';
-import { useBooking } from '../context/BookingContext';
-import { Hotel, User as UserIcon, Briefcase, Heart, LogOut } from 'lucide-react';
-import { motion } from 'motion/react';
+import { useBooking } from '../context/BookingContext.jsx';
+import { User as UserIcon, LogOut } from 'lucide-react';
 
 export const Header = () => {
   const { state, dispatch } = useBooking();
@@ -13,7 +12,7 @@ export const Header = () => {
         onClick={() => dispatch({ type: 'SET_VIEW', payload: 'home' })}
       >
         <span className="text-[22px] font-extrabold tracking-tighter text-brand-primary">
-          Stay<span className="text-brand-secondary">Flow</span>
+          Easy<span className="text-brand-secondary">Stay</span>
         </span>
       </div>
 

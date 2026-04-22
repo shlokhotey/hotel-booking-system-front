@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
-import { Room, Hotel, Booking } from '../types';
-import { useBooking } from '../context/BookingContext';
-import { X, ShieldCheck, Ticket, User, Info, Check } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useBooking } from '../context/BookingContext.jsx';
+import { X, ShieldCheck, Ticket, User, Check } from 'lucide-react';
+import { motion } from 'motion/react';
 
-interface BookingModalProps {
-  hotel: Hotel;
-  onClose: () => void;
-}
-
-export const BookingModal = ({ hotel, onClose }: BookingModalProps) => {
+export const BookingModal = ({ hotel, onClose }) => {
   const { state, dispatch } = useBooking();
-  const [selectedRoom, setSelectedRoom] = useState<Room>(hotel.rooms[0]);
+  const [selectedRoom, setSelectedRoom] = useState(hotel.rooms[0]);
 
-  const handleDateChange = (type: 'checkIn' | 'checkOut', value: string) => {
+  const handleDateChange = (type, value) => {
     dispatch({ type: 'SET_SEARCH', payload: { [type]: value } });
   };
 
-  const calculateNights = (inDate: string, outDate: string) => {
+  const calculateNights = (inDate, outDate) => {
     const start = new Date(inDate);
     const end = new Date(outDate);
     const diff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
@@ -32,7 +26,7 @@ export const BookingModal = ({ hotel, onClose }: BookingModalProps) => {
   const total = subtotal + taxes + serviceFee;
 
   const handleConfirm = () => {
-    const newBooking: Booking = {
+    const newBooking = {
       id: Math.random().toString(36).substr(2, 9),
       roomId: selectedRoom.id,
       hotelId: hotel.id,

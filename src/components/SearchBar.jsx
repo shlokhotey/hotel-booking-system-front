@@ -1,14 +1,13 @@
 import React from 'react';
-import { Search, MapPin, Calendar, Users, ChevronDown } from 'lucide-react';
-import { useBooking } from '../context/BookingContext';
+import { Search, MapPin, Calendar, Users } from 'lucide-react';
+import { useBooking } from '../context/BookingContext.jsx';
 import { motion } from 'motion/react';
 
 export const SearchBar = () => {
   const { state, dispatch } = useBooking();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    // Search logic would go here, effectively it's already reactive via dispatch
   };
 
   return (

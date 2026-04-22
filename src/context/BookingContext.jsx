@@ -1,30 +1,7 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { Room, Hotel, Booking, SearchState, FilterState, User } from '../types';
+import React, { createContext, useContext, useReducer } from 'react';
 import { mockHotels } from '../data/mockData';
 
-interface AppState {
-  hotels: Hotel[];
-  bookings: Booking[];
-  search: SearchState;
-  filters: FilterState;
-  view: 'home' | 'my-bookings' | 'login' | 'support' | 'payment';
-  user: User | null;
-  pendingBooking: Booking | null;
-}
-
-type AppAction =
-  | { type: 'SET_SEARCH'; payload: Partial<SearchState> }
-  | { type: 'SET_FILTERS'; payload: Partial<FilterState> }
-  | { type: 'BOOK_ROOM'; payload: Booking }
-  | { type: 'CANCEL_BOOKING'; payload: string }
-  | { type: 'SET_VIEW'; payload: AppState['view'] }
-  | { type: 'LOGIN'; payload: User }
-  | { type: 'LOGOUT' }
-  | { type: 'INITIATE_PAYMENT'; payload: Booking }
-  | { type: 'COMPLETE_PAYMENT' }
-  | { type: 'CANCEL_PAYMENT' };
-
-const initialState: AppState = {
+const initialState = {
   hotels: mockHotels,
   bookings: [],
   search: {
@@ -44,12 +21,9 @@ const initialState: AppState = {
   pendingBooking: null,
 };
 
-const BookingContext = createContext<{
-  state: AppState;
-  dispatch: React.Dispatch<AppAction>;
-} | undefined>(undefined);
+const BookingContext = createContext(undefined);
 
-function bookingReducer(state: AppState, action: AppAction): AppState {
+function bookingReducer(state, action) {
   switch (action.type) {
     case 'SET_SEARCH':
       return { ...state, search: { ...state.search, ...action.payload } };
@@ -71,7 +45,7 @@ function bookingReducer(state: AppState, action: AppAction): AppState {
       return {
         ...state,
         bookings: state.bookings.map((b) =>
-          b.id === action.payload ? { ...b, status: 'cancelled' as const } : b
+          b.id === action.payload ? { ...b, status: 'cancelled' } : b
         ),
         hotels: state.hotels.map((hotel) => ({
           ...hotel,
@@ -109,7 +83,7 @@ function bookingReducer(state: AppState, action: AppAction): AppState {
   }
 }
 
-export const BookingProvider = ({ children }: { children: ReactNode }) => {
+export const BookingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(bookingReducer, initialState);
 
   return (

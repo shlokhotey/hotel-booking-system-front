@@ -1,6 +1,4 @@
-import { Hotel } from '../types';
-
-export const mockHotels: Hotel[] = [
+export const mockHotels = [
   {
     id: "h1",
     name: "Radisson Blu Hotel Nagpur",
@@ -8,7 +6,7 @@ export const mockHotels: Hotel[] = [
     rating: 5,
     reviews: 2450,
     description: "A premium luxury hotel offering modern architecture, a lavish outdoor pool, health club, and 5 distinct dining options.",
-    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
     amenities: ["Free WiFi", "Outdoor Pool", "Spa & Wellness", "Fitness Center", "Multiple Restaurants", "Valet Parking"],
     rooms: [
       {
@@ -19,7 +17,7 @@ export const mockHotels: Hotel[] = [
         description: "Standard luxury room with pool views.",
         available: true,
         amenities: ["WiFi", "AC", "Mini Bar"],
-        imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800"
+        imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
       },
       {
         id: "h1_2",

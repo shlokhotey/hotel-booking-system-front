@@ -8,7 +8,7 @@ const FAQ_ITEMS = [
   { q: 'What if I need an extra bed?', a: 'You can request additional services by contacting the hotel directly through the support chat once your booking is confirmed.' },
 ];
 
-export const SupportPage: React.FC = () => {
+export const SupportPage = () => {
   return (
     <div className="flex-1 bg-bg-light p-10">
       <div className="max-w-4xl mx-auto space-y-12">
@@ -26,7 +26,7 @@ export const SupportPage: React.FC = () => {
           <motion.div whileHover={{ y: -5 }} className="bg-white p-8 rounded-xl border border-border-theme shadow-sm text-center">
             <Mail className="w-6 h-6 text-brand-primary mx-auto mb-4" />
             <h4 className="text-xs font-black text-text-main uppercase mb-2 tracking-widest">Email Us</h4>
-            <p className="text-[10px] font-bold text-text-muted">support@stayflow.com</p>
+            <p className="text-[10px] font-bold text-text-muted">support@easystay.com</p>
           </motion.div>
           <motion.div whileHover={{ y: -5 }} className="bg-white p-8 rounded-xl border border-border-theme shadow-sm text-center">
             <Phone className="w-6 h-6 text-brand-primary mx-auto mb-4" />

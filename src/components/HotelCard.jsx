@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import { Hotel } from '../types';
-import { useBooking } from '../context/BookingContext';
+import { useBooking } from '../context/BookingContext.jsx';
 import { Star, MapPin, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BookingModal } from './BookingModal';
+import { BookingModal } from './BookingModal.jsx';
 
-interface HotelCardProps {
-  hotel: Hotel;
-  key?: string;
-}
-
-export const HotelCard = ({ hotel }: HotelCardProps) => {
+export const HotelCard = ({ hotel }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Get the minimum price among available rooms
