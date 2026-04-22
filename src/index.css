@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  
+  --color-brand-primary: #007faf;
+  --color-brand-secondary: #005f82;
+  --color-accent-gold: #f48c06;
+  --color-bg-light: #f5f7f9;
+  --color-text-main: #191e3b;
+  --color-text-muted: #5e6d77;
+  --color-border-theme: #e1e4e8;
+  --color-promo-green: #008009;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-light text-text-main antialiased;
+  }
+}
+
+/* Custom design patterns from theme */
+.search-grid-border {
+  @apply grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_0.5fr] gap-px bg-border-theme border border-border-theme rounded overflow-hidden;
+}
+
+.pricing-column {
+  @apply w-[180px] border-l border-border-theme p-5 flex flex-col justify-end text-right bg-[#fbfbfc];
+}
