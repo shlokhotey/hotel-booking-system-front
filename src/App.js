@@ -1,13 +1,13 @@
 import React from 'react';
-import { BookingProvider, useBooking } from './context/BookingContext.jsx';
-import { Header } from './components/Header.jsx';
-import { SearchBar } from './components/SearchBar.jsx';
-import { Sidebar } from './components/Sidebar.jsx';
-import { HotelList } from './components/HotelCard.jsx';
-import { MyBookings } from './components/MyBookings.jsx';
-import { LoginPage } from './components/LoginPage.jsx';
-import { SupportPage } from './components/SupportPage.jsx';
-import { PaymentPage } from './components/PaymentPage.jsx';
+import { BookingProvider, useBooking } from './context/BookingContext.js';
+import { Header } from './components/Header.js';
+import { SearchBar } from './components/SearchBar.js';
+import { Sidebar } from './components/Sidebar.js';
+import { HotelList } from './components/HotelCard.js';
+import { MyBookings } from './components/MyBookings.js';
+import { LoginPage } from './components/LoginPage.js';
+import { SupportPage } from './components/SupportPage.js';
+import { PaymentPage } from './components/PaymentPage.js';
 import { motion, AnimatePresence } from 'motion/react';
 
 function AppContent() {

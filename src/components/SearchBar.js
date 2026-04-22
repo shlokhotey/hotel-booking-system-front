@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search, MapPin, Calendar, Users } from 'lucide-react';
-import { useBooking } from '../context/BookingContext.jsx';
+import { useBooking } from '../context/BookingContext.js';
 import { motion } from 'motion/react';
 
 export const SearchBar = () => {

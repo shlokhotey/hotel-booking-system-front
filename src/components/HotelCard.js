@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useBooking } from '../context/BookingContext.jsx';
+import { useBooking } from '../context/BookingContext.js';
 import { Star, MapPin, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BookingModal } from './BookingModal.jsx';
+import { BookingModal } from './BookingModal.js';
 
 export const HotelCard = ({ hotel }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useBooking } from '../context/BookingContext.jsx';
+import { useBooking } from '../context/BookingContext.js';
 import { ChevronLeft, CreditCard, Wallet, Truck, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const PaymentPage = () => {

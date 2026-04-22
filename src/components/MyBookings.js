@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBooking } from '../context/BookingContext.jsx';
+import { useBooking } from '../context/BookingContext.js';
 import { motion, AnimatePresence } from 'motion/react';
 import { Ticket, CheckCircle2, XCircle } from 'lucide-react';
 

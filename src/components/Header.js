@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBooking } from '../context/BookingContext.jsx';
+import { useBooking } from '../context/BookingContext.js';
 import { User as UserIcon, LogOut } from 'lucide-react';
 
 export const Header = () => {

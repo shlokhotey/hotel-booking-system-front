@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useBooking } from '../context/BookingContext.jsx';
+import { useBooking } from '../context/BookingContext.js';
 import { motion } from 'motion/react';
 import { LogIn, Mail, Lock, User as UserIcon } from 'lucide-react';
 
