@@ -24,7 +24,6 @@ export const PaymentPage = () => {
     { id: 'upi', name: 'Add UPI ID', icon: <Wallet className="w-5 h-5" />, color: 'bg-purple-50 text-purple-600' },
     { id: 'card', name: 'Credit/Debit Cards', icon: <CreditCard className="w-5 h-5" />, color: 'bg-blue-50 text-blue-600' },
     { id: 'wallets', name: 'Wallets', icon: <Wallet className="w-5 h-5" />, color: 'bg-orange-50 text-orange-600' },
-    { id: 'cod', name: 'Pay on delivery', icon: <Truck className="w-5 h-5" />, color: 'bg-green-50 text-green-600' },
   ];
 
   const handlePayment = () => {

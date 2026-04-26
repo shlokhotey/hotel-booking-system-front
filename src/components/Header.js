@@ -1,9 +1,19 @@
 import React from 'react';
 import { useBooking } from '../context/BookingContext.js';
 import { User as UserIcon, LogOut } from 'lucide-react';
+import { auth } from '../lib/firebase';
+import { signOut } from 'firebase/auth';
 
 export const Header = () => {
   const { state, dispatch } = useBooking();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <header className="bg-white border-b border-border-theme flex items-center justify-between px-10 h-[60px] sticky top-0 z-50">
@@ -47,7 +57,7 @@ export const Header = () => {
               <span className="text-sm font-bold text-text-main">{state.user.name}</span>
             </div>
             <button 
-              onClick={() => dispatch({ type: 'LOGOUT' })}
+              onClick={handleLogout}
               className="text-text-muted hover:text-red-500 transition-colors p-2"
               title="Logout"
             >

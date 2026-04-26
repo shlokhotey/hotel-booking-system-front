@@ -41,7 +41,7 @@ function AppContent() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <MyBookings />
+              {state.user ? <MyBookings /> : <LoginPage />}
             </motion.div>
           ) : state.view === 'login' ? (
             <motion.div
@@ -61,7 +61,7 @@ function AppContent() {
               exit={{ opacity: 0 }}
               className="flex-1 flex flex-col"
             >
-              <PaymentPage />
+              {state.user ? <PaymentPage /> : <LoginPage />}
             </motion.div>
           ) : (
             <motion.div

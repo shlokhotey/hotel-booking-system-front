@@ -1,4 +1,7 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { auth, db } from '../lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import { mockHotels } from '../data/mockData';
 
 const initialState = {
@@ -19,6 +22,7 @@ const initialState = {
   view: 'home',
   user: null,
   pendingBooking: null,
+  authLoading: true,
 };
 
 const BookingContext = createContext(undefined);
@@ -57,9 +61,11 @@ function bookingReducer(state, action) {
     case 'SET_VIEW':
       return { ...state, view: action.payload };
     case 'LOGIN':
-      return { ...state, user: action.payload, view: 'home' };
+      return { ...state, user: action.payload, authLoading: false };
     case 'LOGOUT':
-      return { ...state, user: null, view: 'home' };
+      return { ...state, user: null, view: 'home', authLoading: false };
+    case 'SET_AUTH_LOADING':
+      return { ...state, authLoading: action.payload };
     case 'INITIATE_PAYMENT':
       return { ...state, pendingBooking: action.payload, view: 'payment' };
     case 'COMPLETE_PAYMENT':
@@ -85,6 +91,38 @@ function bookingReducer(state, action) {
 
 export const BookingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(bookingReducer, initialState);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (userDoc.exists()) {
+            dispatch({ 
+              type: 'LOGIN', 
+              payload: { ...userDoc.data(), id: firebaseUser.uid, isLoggedIn: true } 
+            });
+          } else {
+            // Fallback for cases where document might not exist yet but user is authed
+            dispatch({ 
+              type: 'LOGIN', 
+              payload: { email: firebaseUser.email, id: firebaseUser.uid, isLoggedIn: true } 
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching user document:", error);
+          dispatch({ 
+            type: 'LOGIN', 
+            payload: { email: firebaseUser.email, id: firebaseUser.uid, isLoggedIn: true } 
+          });
+        }
+      } else {
+        dispatch({ type: 'LOGOUT' });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <BookingContext.Provider value={{ state, dispatch }}>

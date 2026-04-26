@@ -26,6 +26,12 @@ export const BookingModal = ({ hotel, onClose }) => {
   const total = subtotal + taxes + serviceFee;
 
   const handleConfirm = () => {
+    if (!state.user) {
+      dispatch({ type: 'SET_VIEW', payload: 'login' });
+      onClose();
+      return;
+    }
+
     const newBooking = {
       id: Math.random().toString(36).substr(2, 9),
       roomId: selectedRoom.id,
@@ -38,6 +44,7 @@ export const BookingModal = ({ hotel, onClose }) => {
       totalPrice: total,
       status: 'confirmed',
       bookedAt: new Date().toISOString(),
+      userId: state.user.id
     };
 
     dispatch({ type: 'INITIATE_PAYMENT', payload: newBooking });
@@ -183,12 +190,24 @@ export const BookingModal = ({ hotel, onClose }) => {
                <span className="text-[10px] font-bold uppercase tracking-wider">Fast & Secure Booking Process</span>
             </div>
 
-            <button 
-              onClick={handleConfirm}
-              className="w-full bg-text-main hover:bg-black text-white rounded py-5 font-bold transition-all uppercase tracking-[0.2em] text-xs"
-            >
-              Continue to Payment
-            </button>
+            {state.user ? (
+              <button 
+                onClick={handleConfirm}
+                className="w-full bg-text-main hover:bg-black text-white rounded py-5 font-bold transition-all uppercase tracking-[0.2em] text-xs"
+              >
+                Continue to Payment
+              </button>
+            ) : (
+              <button 
+                onClick={() => {
+                  dispatch({ type: 'SET_VIEW', payload: 'login' });
+                  onClose();
+                }}
+                className="w-full bg-brand-primary hover:bg-brand-secondary text-white rounded py-5 font-bold transition-all uppercase tracking-[0.2em] text-xs"
+              >
+                Login to Continue Booking
+              </button>
+            )}
           </div>
         </div>
       </motion.div>
