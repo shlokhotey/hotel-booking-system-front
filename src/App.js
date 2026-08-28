@@ -8,6 +8,7 @@ import { MyBookings } from './components/MyBookings.js';
 import { LoginPage } from './components/LoginPage.js';
 import { SupportPage } from './components/SupportPage.js';
 import { PaymentPage } from './components/PaymentPage.js';
+import HotelExplorer from './components/HotelExplorer.js';
 import { motion, AnimatePresence } from 'motion/react';
 
 function AppContent() {
@@ -62,6 +63,16 @@ function AppContent() {
               className="flex-1 flex flex-col"
             >
               {state.user ? <PaymentPage /> : <LoginPage />}
+            </motion.div>
+          ) : state.view === 'explore' ? (
+            <motion.div
+              key="explore"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col"
+            >
+              <HotelExplorer />
             </motion.div>
           ) : (
             <motion.div

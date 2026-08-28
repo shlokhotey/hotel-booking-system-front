@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useBooking } from '../context/BookingContext.js';
 import { motion, AnimatePresence } from 'motion/react';
 import { LogIn, Mail, Lock, User as UserIcon, Phone, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
-import { auth, db } from '../lib/firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { authApi, bookingsApi } from '../lib/api';
 
 export const LoginPage = () => {
   const { dispatch } = useBooking();
@@ -25,33 +23,24 @@ export const LoginPage = () => {
 
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
-        // Context will be updated by onAuthStateChanged in BookingProvider
-      } else {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        
-        // Create user document in Firestore
-        await setDoc(doc(db, 'users', user.uid), {
-          name,
-          email,
-          phone,
-          createdAt: new Date().toISOString()
+        const { user } = await authApi.login(email, password);
+        dispatch({
+          type: 'LOGIN',
+          payload: { ...user, id: user._id, isLoggedIn: true },
         });
-
+        // Fetch bookings for newly logged-in user
+        const bookings = await bookingsApi.getAll();
+        dispatch({ type: 'SET_BOOKINGS', payload: bookings });
+        dispatch({ type: 'SET_VIEW', payload: 'home' });
+      } else {
+        await authApi.register(name, email, password, phone);
         setError('Account created! Please sign in.');
         setIsLogin(true);
         setPassword('');
       }
     } catch (err) {
-      console.error("Auth error:", err);
-      let message = err.message;
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-        message = 'Invalid email or password';
-      } else if (err.code === 'auth/email-already-in-use') {
-        message = 'Email already in use';
-      }
-      setError(message);
+      console.error('Auth error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -187,4 +176,3 @@ export const LoginPage = () => {
     </div>
   );
 };
-

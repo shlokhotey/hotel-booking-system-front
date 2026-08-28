@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useBooking } from '../context/BookingContext.js';
-import { Star, MapPin, ChevronDown } from 'lucide-react';
+import { Star, MapPin, ChevronDown, Map } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookingModal } from './BookingModal.js';
+import HotelMap from './HotelMap.js';
 
 export const HotelCard = ({ hotel }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -93,17 +94,23 @@ export const HotelCard = ({ hotel }) => {
 
 export const HotelList = () => {
   const { state } = useBooking();
+  const [showMap, setShowMap] = useState(false);
 
   const filteredHotels = state.hotels.filter((hotel) => {
     // Check if any room matches price filter
     const hasMatchingRoom = hotel.rooms.some(r => r.price <= state.filters.priceRange[1]);
     const matchesStars = state.filters.starRating.includes(Math.floor(hotel.rating));
-    const matchesSearch = state.search.destination === '' || 
+    const matchesSearch = state.search.destination === '' ||
       hotel.location.toLowerCase().includes(state.search.destination.toLowerCase()) ||
       hotel.name.toLowerCase().includes(state.search.destination.toLowerCase());
     
     return hasMatchingRoom && matchesStars && matchesSearch;
   });
+
+  // Build marker objects for hotels that carry valid lat/lng coordinates
+  const mapMarkers = filteredHotels
+    .filter((h) => typeof h.lat === 'number' && typeof h.lng === 'number')
+    .map((h) => ({ id: h.id, name: h.name, location: h.location, lat: h.lat, lng: h.lng }));
 
   return (
     <div className="flex-1 space-y-6">
@@ -111,10 +118,28 @@ export const HotelList = () => {
         <h2 className="text-sm font-bold text-gray-400 uppercase tracking-[0.2em]">
           Available Properties ({filteredHotels.length})
         </h2>
-        <div className="flex items-center gap-2 text-xs font-bold text-gray-900 bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
-          Sort by: Recommended <ChevronDown className="w-4 h-4 text-gray-400" />
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowMap((v) => !v)}
+            className={`flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-colors ${
+              showMap
+                ? 'bg-brand-primary text-white border-brand-primary'
+                : 'bg-white text-gray-900 border-gray-100 hover:border-brand-primary shadow-sm'
+            }`}
+          >
+            <Map className="w-3.5 h-3.5" />
+            {showMap ? 'Hide Map' : 'Show Map'}
+          </button>
+          <div className="flex items-center gap-2 text-xs font-bold text-gray-900 bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
+            Sort by: Recommended <ChevronDown className="w-4 h-4 text-gray-400" />
+          </div>
         </div>
       </div>
+
+      {/* ── Map panel ── */}
+      {showMap && filteredHotels.length > 0 && (
+        <HotelMap hotels={mapMarkers} height="380px" />
+      )}
 
       {filteredHotels.length > 0 ? (
         <div className="grid grid-cols-1 gap-6">

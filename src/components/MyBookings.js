@@ -2,9 +2,19 @@ import React from 'react';
 import { useBooking } from '../context/BookingContext.js';
 import { motion, AnimatePresence } from 'motion/react';
 import { Ticket, CheckCircle2, XCircle } from 'lucide-react';
+import { bookingsApi } from '../lib/api';
 
 export const MyBookings = () => {
   const { state, dispatch } = useBooking();
+
+  const handleCancel = async (bookingId) => {
+    try {
+      await bookingsApi.cancel(bookingId);
+      dispatch({ type: 'CANCEL_BOOKING', payload: bookingId });
+    } catch (err) {
+      console.error('Cancel booking error:', err);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-6">
@@ -48,7 +58,7 @@ export const MyBookings = () => {
             {state.bookings.map((booking) => (
               <motion.div
                 layout
-                key={booking.id}
+                key={booking._id || booking.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
@@ -105,7 +115,7 @@ export const MyBookings = () => {
                   <div className="flex flex-col justify-center gap-3 w-full md:w-48">
                     {booking.status === 'confirmed' && (
                       <button 
-                        onClick={() => dispatch({ type: 'CANCEL_BOOKING', payload: booking.id })}
+                        onClick={() => handleCancel(booking._id || booking.id)}
                         className="w-full bg-white hover:bg-red-50 text-red-500 border border-red-100 px-4 py-3 rounded font-bold text-xs uppercase tracking-widest transition-colors"
                       >
                         Cancel

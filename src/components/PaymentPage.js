@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useBooking } from '../context/BookingContext.js';
-import { ChevronLeft, CreditCard, Wallet, Truck, ArrowRight, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, CreditCard, Wallet, ArrowRight, ShieldCheck } from 'lucide-react';
+import { bookingsApi } from '../lib/api';
 
 export const PaymentPage = () => {
   const { state, dispatch } = useBooking();
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   if (!state.pendingBooking) {
     return (
@@ -26,9 +29,31 @@ export const PaymentPage = () => {
     { id: 'wallets', name: 'Wallets', icon: <Wallet className="w-5 h-5" />, color: 'bg-orange-50 text-orange-600' },
   ];
 
-  const handlePayment = () => {
-     if (!selectedMethod) return;
-     dispatch({ type: 'COMPLETE_PAYMENT' });
+  const handlePayment = async () => {
+    if (!selectedMethod) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const { pendingBooking } = state;
+      // Persist the booking to MongoDB
+      const saved = await bookingsApi.create({
+        roomId:     pendingBooking.roomId,
+        hotelId:    pendingBooking.hotelId,
+        hotelName:  pendingBooking.hotelName,
+        roomType:   pendingBooking.roomType,
+        checkIn:    pendingBooking.checkIn,
+        checkOut:   pendingBooking.checkOut,
+        guests:     pendingBooking.guests,
+        totalPrice: pendingBooking.totalPrice,
+      });
+      // Replace the local pending booking with the server-persisted one
+      dispatch({ type: 'COMPLETE_PAYMENT', payload: saved });
+    } catch (err) {
+      console.error('Payment error:', err);
+      setError('Could not complete payment. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -110,20 +135,23 @@ export const PaymentPage = () => {
 
         {/* Bottom Bar */}
         <div className="mt-auto p-6 bg-white border-t border-gray-100">
+          {error && (
+            <p className="text-xs font-bold text-red-500 mb-3 uppercase tracking-wider">{error}</p>
+          )}
           <div className="flex items-center gap-2 mb-4 text-gray-400">
             <ShieldCheck className="w-4 h-4 text-promo-green" />
             <span className="text-[10px] font-bold uppercase tracking-wider">100% Safe & Secure Payments</span>
           </div>
           <button 
             onClick={handlePayment}
-            disabled={!selectedMethod}
+            disabled={!selectedMethod || loading}
             className={`w-full py-5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl shadow-brand-primary/20 ${
-              selectedMethod 
+              selectedMethod && !loading
                 ? 'bg-brand-primary text-white hover:bg-brand-secondary' 
                 : 'bg-gray-100 text-gray-400 cursor-not-allowed shadow-none'
             }`}
           >
-            Pay Now ₹{state.pendingBooking.totalPrice.toLocaleString('en-IN')}
+            {loading ? 'Processing…' : `Pay Now ₹${state.pendingBooking.totalPrice.toLocaleString('en-IN')}`}
           </button>
         </div>
       </div>

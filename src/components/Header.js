@@ -1,18 +1,14 @@
 import React from 'react';
 import { useBooking } from '../context/BookingContext.js';
 import { User as UserIcon, LogOut } from 'lucide-react';
-import { auth } from '../lib/firebase';
-import { signOut } from 'firebase/auth';
+import { authApi } from '../lib/api';
 
 export const Header = () => {
   const { state, dispatch } = useBooking();
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const handleLogout = () => {
+    authApi.logout();
+    dispatch({ type: 'LOGOUT' });
   };
 
   return (
@@ -27,19 +23,25 @@ export const Header = () => {
       </div>
 
       <nav className="hidden md:flex items-center gap-6">
-        <button 
+        <button
           onClick={() => dispatch({ type: 'SET_VIEW', payload: 'home' })}
           className={`text-sm font-medium transition-colors ${state.view === 'home' ? 'text-brand-primary' : 'text-text-muted hover:text-brand-primary'}`}
         >
           Destinations
         </button>
-        <button 
+        <button
+          onClick={() => dispatch({ type: 'SET_VIEW', payload: 'explore' })}
+          className={`text-sm font-medium transition-colors ${state.view === 'explore' ? 'text-brand-primary' : 'text-text-muted hover:text-brand-primary'}`}
+        >
+          Explore Hotels
+        </button>
+        <button
           onClick={() => dispatch({ type: 'SET_VIEW', payload: 'my-bookings' })}
           className={`text-sm font-medium transition-colors ${state.view === 'my-bookings' ? 'text-brand-primary' : 'text-text-muted hover:text-brand-primary'}`}
         >
           My Bookings
         </button>
-        <button 
+        <button
           onClick={() => dispatch({ type: 'SET_VIEW', payload: 'support' })}
           className={`text-sm font-medium transition-colors ${state.view === 'support' ? 'text-brand-primary' : 'text-text-muted hover:text-brand-primary'}`}
         >
